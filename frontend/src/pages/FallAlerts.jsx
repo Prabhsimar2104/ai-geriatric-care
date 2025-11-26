@@ -2,6 +2,8 @@
 import { useState, useEffect } from 'react';
 import { AlertTriangle, CheckCircle, Clock, User, Calendar, Image as ImageIcon } from 'lucide-react';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+
 export default function FallAlerts() {
   const [alerts, setAlerts] = useState([]);
   const [filter, setFilter] = useState('unacknowledged'); // 'all', 'unacknowledged', 'acknowledged'
@@ -22,7 +24,7 @@ export default function FallAlerts() {
       const token = localStorage.getItem('token');
       const acknowledgedParam = filter === 'all' ? '' : `?acknowledged=${filter === 'acknowledged'}`;
       
-      const response = await fetch(`http://localhost:4000/api/notify/fall-alerts${acknowledgedParam}`, {
+      const response = await fetch(`${API_URL}/api/notify/fall-alerts${acknowledgedParam}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -43,7 +45,7 @@ export default function FallAlerts() {
     try {
       const token = localStorage.getItem('token');
       
-      const response = await fetch(`http://localhost:4000/api/notify/fall-alerts/${alertId}/acknowledge`, {
+      const response = await fetch(`${API_URL}/api/notify/fall-alerts/${alertId}/acknowledge`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`
